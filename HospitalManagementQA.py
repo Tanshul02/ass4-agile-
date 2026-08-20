@@ -5,240 +5,193 @@ from HospitalManagement import HospitalManagement
 
 class TestHospitalManagement(unittest.TestCase):
 
-    # -----------------------------------------
     # 1. Regular patient
-    # -----------------------------------------
     def test_regular_patient(self):
 
         patient = HospitalManagement(
             "P001",
             35,
-            "Dr. Sharma",
-            "Cardiology",
             "Regular",
-            30,
             [],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["consultation_fee"],
+            bill["Consultation Fee"],
             1000
         )
 
 
-    # -----------------------------------------
     # 2. Emergency patient
-    # -----------------------------------------
     def test_emergency_patient(self):
 
         patient = HospitalManagement(
             "P002",
             35,
-            "Dr. Kumar",
             "Emergency",
-            "Emergency",
-            30,
             [],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["consultation_fee"],
+            bill["Consultation Fee"],
             1500
         )
 
 
-    # -----------------------------------------
     # 3. Senior citizen
-    # -----------------------------------------
     def test_senior_citizen(self):
 
         patient = HospitalManagement(
             "P003",
             65,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             [],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["consultation_fee"],
+            bill["Consultation Fee"],
             800
         )
 
 
-    # -----------------------------------------
     # 4. Senior citizen emergency
-    # -----------------------------------------
     def test_senior_emergency(self):
 
         patient = HospitalManagement(
             "P004",
-            70,
-            "Dr. Kumar",
+            65,
             "Emergency",
-            "Emergency",
-            30,
             [],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["consultation_fee"],
+            bill["Consultation Fee"],
             1500
         )
 
 
-    # -----------------------------------------
     # 5. Follow-up consultation
-    # -----------------------------------------
     def test_follow_up(self):
 
         patient = HospitalManagement(
             "P005",
             40,
-            "Dr. Sharma",
-            "General",
             "Follow-up",
-            20,
             [],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["consultation_fee"],
+            bill["Consultation Fee"],
             500
         )
 
 
-    # -----------------------------------------
     # 6. Senior citizen follow-up
-    # -----------------------------------------
     def test_senior_follow_up(self):
 
         patient = HospitalManagement(
             "P006",
             65,
-            "Dr. Sharma",
-            "General",
             "Follow-up",
-            20,
             [],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["consultation_fee"],
+            bill["Consultation Fee"],
             400
         )
 
 
-    # -----------------------------------------
     # 7. Blood test
-    # -----------------------------------------
     def test_blood_test(self):
 
         patient = HospitalManagement(
             "P007",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             ["Blood"],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["lab_charges"],
+            bill["Lab Charges"],
             300
         )
 
 
-    # -----------------------------------------
     # 8. Multiple lab tests
-    # -----------------------------------------
     def test_multiple_lab_tests(self):
 
         patient = HospitalManagement(
             "P008",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             ["Blood", "Urine", "Xray"],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["lab_charges"],
+            bill["Lab Charges"],
             1000
         )
 
 
-    # -----------------------------------------
     # 9. MRI test
-    # -----------------------------------------
     def test_mri(self):
 
         patient = HospitalManagement(
             "P009",
-            40,
-            "Dr. Sharma",
-            "Neurology",
-            "Regular",
             30,
+            "Regular",
             ["MRI"],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["lab_charges"],
+            bill["Lab Charges"],
             3000
         )
 
 
-    # -----------------------------------------
     # 10. Medicine charges
-    # -----------------------------------------
     def test_medicine_charges(self):
 
         medicines = [
             {
-                "name": "Medicine A",
-                "price": 200,
+                "name": "Paracetamol",
+                "price": 100,
                 "quantity": 2
             }
         ]
@@ -246,26 +199,21 @@ class TestHospitalManagement(unittest.TestCase):
         patient = HospitalManagement(
             "P010",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             [],
             medicines,
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["medicine_charges"],
-            400
+            bill["Medicine Charges"],
+            200
         )
 
 
-    # -----------------------------------------
     # 11. Multiple medicines
-    # -----------------------------------------
     def test_multiple_medicines(self):
 
         medicines = [
@@ -284,60 +232,47 @@ class TestHospitalManagement(unittest.TestCase):
         patient = HospitalManagement(
             "P011",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             [],
             medicines,
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["medicine_charges"],
+            bill["Medicine Charges"],
             700
         )
 
 
-    # -----------------------------------------
     # 12. No insurance
-    # -----------------------------------------
     def test_no_insurance(self):
 
         patient = HospitalManagement(
             "P012",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             ["Blood"],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["insurance_coverage"],
+            bill["Insurance Coverage"],
             0
         )
 
 
-    # -----------------------------------------
     # 13. 50% insurance
-    # -----------------------------------------
     def test_insurance_50_percent(self):
 
         patient = HospitalManagement(
             "P013",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             ["Blood"],
             [],
             {
@@ -346,28 +281,26 @@ class TestHospitalManagement(unittest.TestCase):
             }
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
-        # Total = 1000 + 300 = 1300
-        # 50% = 650
+        # Consultation = 1000
+        # Blood = 300
+        # Total = 1300
+        # Insurance = 650
+
         self.assertEqual(
-            bill["insurance_coverage"],
+            bill["Insurance Coverage"],
             650
         )
 
 
-    # -----------------------------------------
     # 14. Insurance maximum limit
-    # -----------------------------------------
     def test_insurance_maximum_limit(self):
 
         patient = HospitalManagement(
             "P014",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             ["MRI"],
             [],
             {
@@ -376,17 +309,15 @@ class TestHospitalManagement(unittest.TestCase):
             }
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["insurance_coverage"],
+            bill["Insurance Coverage"],
             1000
         )
 
 
-    # -----------------------------------------
     # 15. Complete bill
-    # -----------------------------------------
     def test_complete_bill(self):
 
         medicines = [
@@ -400,40 +331,32 @@ class TestHospitalManagement(unittest.TestCase):
         patient = HospitalManagement(
             "P015",
             35,
-            "Dr. Sharma",
-            "Cardiology",
             "Regular",
-            30,
             ["Blood"],
             medicines,
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         # Consultation = 1000
-        # Lab = 300
+        # Blood = 300
         # Medicine = 400
         # Total = 1700
 
         self.assertEqual(
-            bill["total_bill"],
+            bill["Total Bill"],
             1700
         )
 
 
-    # -----------------------------------------
     # 16. Patient payable amount
-    # -----------------------------------------
     def test_patient_payable(self):
 
         patient = HospitalManagement(
             "P016",
             35,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             ["Blood"],
             [],
             {
@@ -442,58 +365,50 @@ class TestHospitalManagement(unittest.TestCase):
             }
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         # Total = 1300
         # Insurance = 650
         # Payable = 650
 
         self.assertEqual(
-            bill["patient_payable"],
+            bill["Patient Payable"],
             650
         )
 
 
-    # -----------------------------------------
     # 17. Emergency with lab
-    # -----------------------------------------
     def test_emergency_with_lab(self):
 
         patient = HospitalManagement(
             "P017",
             45,
-            "Dr. Kumar",
             "Emergency",
-            "Emergency",
-            45,
             ["Blood", "Xray"],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         # Emergency = 1500
-        # Lab = 800
+        # Blood = 300
+        # Xray = 500
+        # Total = 2300
 
         self.assertEqual(
-            bill["total_bill"],
+            bill["Total Bill"],
             2300
         )
 
 
-    # -----------------------------------------
     # 18. Emergency with insurance
-    # -----------------------------------------
     def test_emergency_with_insurance(self):
 
         patient = HospitalManagement(
             "P018",
             45,
-            "Dr. Kumar",
             "Emergency",
-            "Emergency",
-            45,
             [],
             [],
             {
@@ -502,60 +417,52 @@ class TestHospitalManagement(unittest.TestCase):
             }
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
+
+        # 50% of 1500 = 750
 
         self.assertEqual(
-            bill["insurance_coverage"],
+            bill["Insurance Coverage"],
             750
         )
 
 
-    # -----------------------------------------
     # 19. Unknown lab test
-    # -----------------------------------------
     def test_unknown_lab_test(self):
 
         patient = HospitalManagement(
             "P019",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
-            ["Unknown Test"],
+            ["Unknown"],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["lab_charges"],
+            bill["Lab Charges"],
             0
         )
 
 
-    # -----------------------------------------
     # 20. Zero medicines
-    # -----------------------------------------
     def test_zero_medicines(self):
 
         patient = HospitalManagement(
             "P020",
             30,
-            "Dr. Sharma",
-            "General",
             "Regular",
-            30,
             [],
             [],
             None
         )
 
-        bill = patient.calculate_bill()
+        bill = patient.generate_bill()
 
         self.assertEqual(
-            bill["medicine_charges"],
+            bill["Medicine Charges"],
             0
         )
 
